@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import MissionsList from "./MissionsList";
 
-const missionsFixture = [
+export const missionsFixture = [
   { mission_name: "mission one", mission_id: "mission_one" },
   { mission_name: "mission two", mission_id: "mission_two" },
 ];
@@ -27,6 +27,6 @@ test("MissionsList shows data when re-rendered with new submission data", () => 
   const error = "my dumb error";
   rerender(<MissionsList error={error} />);
 
-  expect(() => getByText(error)).toBeInTheDocument();
+  expect(() => getByText(error)).not.toThrow();
   expect(queryAllByTestId("mission")).toHaveLength(0);
 });

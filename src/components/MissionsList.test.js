@@ -8,11 +8,11 @@ const missionsFixture = [
 ];
 
 test("MissionsList renders properly", () => {
-  render(<MissionsList missions={[]} error="" />);
+  expect(() => render(<MissionsList missions={[]} error="" />)).not.toThrow();
 });
 
 test("MissionsList shows data when re-rendered with new submission data", () => {
-  const { queryAllByTestId, rerender } = render(
+  const { queryAllByTestId, rerender, getByText } = render(
     <MissionsList missions={[]} error="" />
   );
 
@@ -21,6 +21,12 @@ test("MissionsList shows data when re-rendered with new submission data", () => 
 
   rerender(<MissionsList error="" missions={missionsFixture} />);
 
-    expect(queryAllByTestId("mission")).toHaveLength(2);
-    // expect(queryAllByTestId("mission")).toStrictEqual(missionsFixture);
+  expect(queryAllByTestId("mission")).toHaveLength(2);
+  // expect(queryAllByTestId("mission")).toStrictEqual(missionsFixture);
+
+  const error = "my dumb error";
+  render(<MissionsList error={error} />);
+
+  expect(getByText(error)).toBeInTheDocument();
+  expect(queryAllByTestId("mission")).toHaveLength(0);
 });

@@ -25,8 +25,8 @@ test("MissionsList shows data when re-rendered with new submission data", () => 
   // expect(queryAllByTestId("mission")).toStrictEqual(missionsFixture);
 
   const error = "my dumb error";
-  render(<MissionsList error={error} />);
+  rerender(<MissionsList error={error} />);
 
-  expect(getByText(error)).toBeInTheDocument();
+  expect(() => getByText(error)).toBeInTheDocument();
   expect(queryAllByTestId("mission")).toHaveLength(0);
 });

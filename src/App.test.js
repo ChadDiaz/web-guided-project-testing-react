@@ -1,5 +1,5 @@
 import React from "react";
-import { fireEvent, render } from "@testing-library/react";
+import { fireEvent, render, waitFor, wait } from "@testing-library/react";
 import App from "./App";
 import { fetchMissions as mockFetchMissions } from "./api/fetchMissions";
 // mock the api so we don't make a call prep to be told what value to return
@@ -12,13 +12,15 @@ test("App renders", () => {
   render(<App />);
 });
 
-test("App fetches and renders missions data", () => {
+test("App fetches and renders missions data", async () => {
   // tell the test system what we want the mission data to return
-  mockFetchMissions.mockResolvedValueOnce(missionsFixture);
-  const { getByText } = render(<App />);
+  mockFetchMissions.mockResolvedValueOnce({ data: missionsFixture });
+  const { getByText, queryAllByTestId } = render(<App />);
 
   const button = getByText(/get data/i);
 
   fireEvent.click(button);
   getByText(/we are fetching data/i);
+
+  await waitFor(() => expect(queryAllByTestId("mission")).toHaveLength(2));
 });
